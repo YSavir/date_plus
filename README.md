@@ -46,7 +46,7 @@ date_object.next_instance_of(:month_name => 'July', :day => 4, :weekday_name => 
 # next_instance_of accepts any combination of date methods
 ```
 
-### Start/end of time periods
+### Start and end of time periods
 
 ```ruby
 date_object.start_of_week
@@ -68,7 +68,7 @@ date_object.end_of_year
 # => #<Date: 2014-12-31 ((2457023j,0s,0n),+0s,2299161j)>
 ```
 
-### next or future instance of specific date values
+### Next or future instance of specific date values
 
 ```ruby
 date_object.future_instance_of_weekday('sunday')
