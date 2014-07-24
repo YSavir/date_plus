@@ -1,4 +1,4 @@
-require "date_plus/version"
+require_relative "date_plus/version"
 require 'date'
 
 class Date
@@ -78,7 +78,20 @@ class Date
     return years.last
   end
 
+  def increment
+    @times_incremented ? @times_incremented += 1 : @times_incremented = 1
+    self.adjusted_day
+  end
+
+  def adjusted_day
+    self + times_incremented
+  end
+
   private
+
+  def times_incremented
+    @times_incremented
+  end
 
   def weekday_names
     ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
