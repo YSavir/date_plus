@@ -3,6 +3,14 @@ require 'date'
 
 class Date
 
+  def weekday_name
+    self.strftime('%A')
+  end
+
+  def month_name
+    self.strftime('%B')
+  end
+
   def start_of_week
     self - cwday
   end
@@ -32,18 +40,6 @@ class Date
   def next_instance_of(options)
     options.each { |k, v| options[k] = v.downcase.capitalize if v.class == String }
     return check_dates_by_year(self, end_of_year, options)
-  end
-
-  def check_dates_by_year(start_date, end_date, options)
-    start_date.step(end_date, step=+1) do |date|
-      return date if options.all? { |k, v| date.valid_condition(k, v) }
-    end
-    next_year_start = end_date + 1
-    check_dates_by_year(next_year_start, next_year_start.end_of_year, options)
-  end
-
-  def valid_condition(field, condition)
-    self.send(field) == condition
   end
 
   def future_instance_of_weekday(weekday, instances_away=1)
@@ -82,21 +78,7 @@ class Date
     return years.last
   end
 
-
-  def weekday_name
-    self.strftime('%A')
-  end
-
-  def month_name
-    self.strftime('%B')
-  end
-  
-  def matches_value(field, value)
-    self.send(field) == value
-  end
-
   private
-
 
   def weekday_names
     ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -104,6 +86,22 @@ class Date
 
   def month_names
     ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  end
+
+  def matches_value(field, value)
+    self.send(field) == value
+  end
+
+  def valid_condition(field, condition)
+    self.send(field) == condition
+  end
+
+  def check_dates_by_year(start_date, end_date, options)
+    start_date.step(end_date, step=+1) do |date|
+      return date if options.all? { |k, v| date.valid_condition(k, v) }
+    end
+    next_year_start = end_date + 1
+    check_dates_by_year(next_year_start, next_year_start.end_of_year, options)
   end
 
   def fixnum_or_nil_or_error(arg)
