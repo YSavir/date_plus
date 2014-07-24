@@ -86,8 +86,8 @@ date_object.future_instance_of_weekday('sunday', 4)
 # => #<Date: 2014-08-17 ((2456887j,0s,0n),+0s,2299161j)>
 
 # a second integer argument will find the nth future weekday
-date_object.future_instance_of_weekday('sunday', 4)
-# => #<Date: 2014-08-17 ((2456887j,0s,0n),+0s,2299161j)>
+date_object.future_instance_of_month('march', 6)
+# => #<Date: 2020-03-01 ((2458910j,0s,0n),+0s,2299161j)>
 ```
 
 ## Contributing
