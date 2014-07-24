@@ -22,7 +22,8 @@ Date_plus adds methods directly to instances of Date objects:
 
 ```ruby
 date_object = Date.new(2014, 7, 24)
-# => #<Date: 2014-07-24 ((2456863j,0s,0n),+0s,2299161j)>```
+# => #<Date: 2014-07-24 ((2456863j,0s,0n),+0s,2299161j)>
+```
 
 ### Methods for weekday and month names
 
@@ -31,7 +32,8 @@ date_object.weekday_name
 => "Thursday"
 
 date_object.month_name
-=> "July"```
+=> "July"
+```
 
 ### Find a specific future date
 ```ruby
@@ -63,7 +65,8 @@ date_object.start_of_year
 # #<Date: 2014-01-01 ((2456659j,0s,0n),+0s,2299161j)>
 
 date_object.end_of_year
-# => #<Date: 2014-12-31 ((2457023j,0s,0n),+0s,2299161j)>```
+# => #<Date: 2014-12-31 ((2457023j,0s,0n),+0s,2299161j)>
+```
 
 ### next or future instance of specific date values
 
@@ -84,7 +87,8 @@ date_object.future_instance_of_weekday('sunday', 4)
 
 # a second integer argument will find the nth future weekday
 date_object.future_instance_of_weekday('sunday', 4)
-# => #<Date: 2014-08-17 ((2456887j,0s,0n),+0s,2299161j)>```
+# => #<Date: 2014-08-17 ((2456887j,0s,0n),+0s,2299161j)>
+```
 
 ## Contributing
 
