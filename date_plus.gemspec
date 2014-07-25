@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["saviry@gmail.com"]
   spec.description   = %q{Additional methods for date objects}
   spec.summary       = %q{Filling in necessary holes and eliminating unnecessary steps in date objects}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/YSavir/date_plus"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

@@ -3,6 +3,10 @@ require 'date'
 
 class Date
 
+  def next_week
+    self + 7
+  end
+
   def weekday_name
     self.strftime('%A')
   end
@@ -28,11 +32,11 @@ class Date
   end
 
   def end_of_month
-    Date.civil(year, month, -1)
+    Date.new(year, month, -1)
   end
 
   def end_of_year
-    Date.civil(year, -1, -1)
+    Date.new(year, -1, -1)
   end
 
   # options can accept any method that responds to date
@@ -42,25 +46,38 @@ class Date
     return check_dates_by_year(self, end_of_year, options)
   end
 
+  def find_next_weekday
+
+  end
+
+  def find_next_day
+
+  end
+
+  def find_next_month
+
+  end
+
   def future_instance_of_weekday(weekday, instances_away=1)
     raise 'Argument passed is not a weekday' unless weekday.class == String || !weekday_names.include?(weekday.downcase.capitalize)
-    fixnum_or_nil_or_error(instances_away)
-    self.step(self + (7 * instances_away), step=+1).reverse_each do |current_day|
+    raise_error_unless_fixnum_or_nil(instances_away)
+    self.step(self + (7 * instances_away), 1).reverse_each do |current_day|
       return current_day if current_day.weekday_name == weekday.downcase.capitalize
     end
   end
 
   def future_instance_of_day(day, instances_away=1)
-    valid_day_or_error(day)
-    fixnum_or_nil_or_error(instances_away)
-    self.step(self + (31 * instances_away), step=+1).reverse_each do |current_day|
+    raise_error_unless_valid_day(day)
+    raise_error_unless_fixnum_or_nil(instances_away)
+
+    self.step(self + (31 * instances_away), 1).reverse_each do |current_day|
       return current_day if current_day.day === day
     end
   end
 
   def future_instance_of_month(month_name, instances_away=1)
-    valid_month_or_error(month_name)
-    fixnum_or_nil_or_error(instances_away)
+    raise_error_unless_valid_month(month_name)
+    raise_error_unless_fixnum_or_nil(instances_away)
     months = []
     first_of_month = Date.today.start_of_month
     (instances_away * 12).times do
@@ -71,7 +88,7 @@ class Date
   end
 
   def future_year(instances_away)
-    fixnum_nil_or_error(instances_away)
+    raise_error_unless_fixnum(instances_away)
     year = Date.today.start_of_year
     years = []
     (instances_away + 1).times {years.push(year); year = year.next_year}
@@ -83,8 +100,18 @@ class Date
     self.adjusted_day
   end
 
+  def increment_by(times_to_increment)
+    raise_error_unless_fixnum(times_to_increment)
+    times_to_increment.times {increment}
+    self.adjusted_day
+  end
+
   def adjusted_day
     self + times_incremented
+  end
+
+  def reset_adjusted_day
+    @times_incremented = 0
   end
 
   private
@@ -117,15 +144,19 @@ class Date
     check_dates_by_year(next_year_start, next_year_start.end_of_year, options)
   end
 
-  def fixnum_or_nil_or_error(arg)
+  def raise_error_unless_fixnum(arg)
+    raise 'Argument passed is not an integer' unless arg.class == Fixnum
+  end
+
+  def raise_error_unless_fixnum_or_nil(arg)
     raise 'Argument passed is not an integer' unless arg.class == Fixnum || arg.nil?
   end
 
-  def valid_day_or_error(arg)
+  def raise_error_unless_valid_day(arg)
     raise 'Argument passed is not a valid day' unless arg.class == Fixnum && 0 < arg && arg < 32
   end
 
-  def valid_month_or_error(arg)
+  def raise_error_unless_valid_month(arg)
     raise 'Argument passed is not a valid month' unless arg.class == String && month_names.include?(arg.downcase.capitalize)
   end
 
