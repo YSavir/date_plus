@@ -46,15 +46,15 @@ class Date
     return check_dates_by_year(self, end_of_year, options)
   end
 
-  def find_next_weekday
+  def find_next_weekday(weekday)
+    self.step(self + 7).reverse_each {|date| return date if date.cwday == weekday}
+  end
+
+  def find_next_day(day)
 
   end
 
-  def find_next_day
-
-  end
-
-  def find_next_month
+  def find_next_month(month)
 
   end
 
