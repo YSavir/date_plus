@@ -100,30 +100,7 @@ class DateP < Date
     return years.last
   end
 
-  def increment
-    @times_incremented ? @times_incremented += 1 : @times_incremented = 1
-    self.adjusted_day
-  end
-
-  def increment_by(times_to_increment)
-    raise_error_unless_fixnum(times_to_increment)
-    times_to_increment.times {increment}
-    self.adjusted_day
-  end
-
-  def adjusted_day
-    self + times_incremented
-  end
-
-  def reset_adjusted_day
-    @times_incremented = 0
-  end
-
   private
-
-  def times_incremented
-    @times_incremented
-  end
 
   def weekday_names
     ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
