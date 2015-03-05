@@ -127,11 +127,11 @@ class DateP < Date
   end
 
   def raise_error_unless_valid_weekday(arg)
-    raise 'Argument passed is not a weekday' unless arg.class == String || !arg_names.include?(arg.downcase.capitalize)
+    raise 'Argument passed must be a weekday' unless arg.class == String || !arg_names.include?(arg.downcase.capitalize)
   end
 
   def raise_error_unless_fixnum(arg)
-    raise 'Argument passed is not an integer' unless arg.class == Fixnum
+    raise 'Argument passed must be an integer' unless arg.class == Fixnum
   end
 
   # def raise_error_unless_in_num_range(min, max, num)
@@ -139,11 +139,11 @@ class DateP < Date
   # end
 
   def raise_error_unless_fixnum_or_nil(arg)
-    raise 'Argument passed is not an integer' unless arg.class == Fixnum || arg.nil?
+    raise 'Argument passed must be an integer' unless arg.class == Fixnum || arg.nil?
   end
 
   def raise_error_unless_valid_month(arg)
-    raise 'Argument passed is not a valid month' unless arg.class == String && month_names.include?(arg.downcase.capitalize)
+    raise 'Argument passed is must be a valid month' unless arg.class == String && month_names.include?(arg.downcase.capitalize)
   end
 
   def raise_error_unless_valid_month_name_or_number(arg)
