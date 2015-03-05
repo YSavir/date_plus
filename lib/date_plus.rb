@@ -4,6 +4,18 @@ require_relative "date_plus/converters"
 class DateP < Date
   include Converters
 
+  # Check if first argument is a date.
+  # If it is, instantiate a new DateP with that date's date
+  # else run new as usual
+  def self.new(year=-4712, month=1, day=1, start=Date::ITALY)
+    if year.class == Date
+      date = year
+      return DateP.new(date.year, date.month, date.day, date.start)
+    else
+      super
+    end
+  end
+
   # options can accept any method that responds to date
   # so long as the criteria matches the output of that method
   def next_instance_of(options)
