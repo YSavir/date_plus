@@ -1,42 +1,8 @@
 require 'date'
+require_relative "date_plus/converters"
 
 class DateP < Date
-
-  def next_week
-    self + 7
-  end
-
-  def weekday_name
-    self.strftime('%A')
-  end
-
-  def month_name
-    self.strftime('%B')
-  end
-
-  def start_of_week
-    self - cwday
-  end
-
-  def start_of_month
-    self - day + 1
-  end
-
-  def start_of_year
-    self - yday + 1
-  end
-
-  def end_of_week
-    self + (6 - cwday)
-  end
-
-  def end_of_month
-    DateP.new(year, month, -1)
-  end
-
-  def end_of_year
-    DateP.new(year, -1, -1)
-  end
+  include Converters
 
   # options can accept any method that responds to date
   # so long as the criteria matches the output of that method
@@ -128,4 +94,4 @@ class DateP < Date
 end
 
 require_relative "date_plus/version"
-require_relative "date_plus/exceptions.rb"
+require_relative "date_plus/exceptions"
