@@ -1,7 +1,7 @@
 require_relative "date_plus/version"
 require 'date'
 
-class Date
+class DateP < Date
 
   def next_week
     self + 7
@@ -32,11 +32,11 @@ class Date
   end
 
   def end_of_month
-    Date.new(year, month, -1)
+    DateP.new(year, month, -1)
   end
 
   def end_of_year
-    Date.new(year, -1, -1)
+    DateP.new(year, -1, -1)
   end
 
   # options can accept any method that responds to date
@@ -47,19 +47,24 @@ class Date
   end
 
   def find_next_weekday(weekday)
-    self.step(self + 7).reverse_each {|date| return date if date.cwday == weekday}
+    self.step(next_week).reverse_each {|date| return date if date.cwday == weekday}
   end
 
   def find_next_day(day)
-
+    self.step(next_month).reverse_each {|date| return date if date.day == day}
   end
 
-  def find_next_month(month)
-
+  def find_next_month(target_month)
+    raise_error_unless_valid_month(target_month)
+    month_to_check = next_month.start_of_month
+    until target_month == month_to_check.month || target_month.downcase.capitalize == month_to_check.month_name
+      month_to_check = month_to_check.next_month
+    end
+    month_to_check
   end
 
   def future_instance_of_weekday(weekday, instances_away=1)
-    raise 'Argument passed is not a weekday' unless weekday.class == String || !weekday_names.include?(weekday.downcase.capitalize)
+    raise_error_unless_valid_weekday
     raise_error_unless_fixnum_or_nil(instances_away)
     self.step(self + (7 * instances_away), 1).reverse_each do |current_day|
       return current_day if current_day.weekday_name == weekday.downcase.capitalize
@@ -67,7 +72,7 @@ class Date
   end
 
   def future_instance_of_day(day, instances_away=1)
-    raise_error_unless_valid_day(day)
+    raise_error_unless_in_num_range(1, month.end_of_month.day, day)
     raise_error_unless_fixnum_or_nil(instances_away)
 
     self.step(self + (31 * instances_away), 1).reverse_each do |current_day|
@@ -144,20 +149,29 @@ class Date
     check_dates_by_year(next_year_start, next_year_start.end_of_year, options)
   end
 
+  def raise_error_unless_valid_weekday(arg)
+    raise 'Argument passed is not a weekday' unless arg.class == String || !arg_names.include?(arg.downcase.capitalize)
+  end
+
   def raise_error_unless_fixnum(arg)
     raise 'Argument passed is not an integer' unless arg.class == Fixnum
   end
+
+  # def raise_error_unless_in_num_range(min, max, num)
+  #   raise "Argument passed is not valid number" unless arg.class == Fixnum && (min..max).include? num
+  # end
 
   def raise_error_unless_fixnum_or_nil(arg)
     raise 'Argument passed is not an integer' unless arg.class == Fixnum || arg.nil?
   end
 
-  def raise_error_unless_valid_day(arg)
-    raise 'Argument passed is not a valid day' unless arg.class == Fixnum && 0 < arg && arg < 32
-  end
-
   def raise_error_unless_valid_month(arg)
     raise 'Argument passed is not a valid month' unless arg.class == String && month_names.include?(arg.downcase.capitalize)
+  end
+
+  def raise_error_unless_valid_month_name_or_number(arg)
+    raise_error_unless_valid_month
+    raise_error_unless_in_num_range(1, 12, arg)
   end
 
 end
