@@ -1,4 +1,3 @@
-require_relative "date_plus/version"
 require 'date'
 
 class DateP < Date
@@ -47,7 +46,7 @@ class DateP < Date
   end
 
   def find_next_weekday(weekday)
-    self.step(next_week).reverse_each {|date| return date if date.cwday == weekday}
+    self.step(next_week).reverse_each {|date| return date if date.weekday_name == weekday}
   end
 
   def find_next_day(day)
@@ -126,29 +125,7 @@ class DateP < Date
     check_dates_by_year(next_year_start, next_year_start.end_of_year, options)
   end
 
-  def raise_error_unless_valid_weekday(arg)
-    raise 'Argument passed must be a weekday' unless arg.class == String || !arg_names.include?(arg.downcase.capitalize)
-  end
-
-  def raise_error_unless_fixnum(arg)
-    raise 'Argument passed must be an integer' unless arg.class == Fixnum
-  end
-
-  # def raise_error_unless_in_num_range(min, max, num)
-  #   raise "Argument passed is not valid number" unless arg.class == Fixnum && (min..max).include? num
-  # end
-
-  def raise_error_unless_fixnum_or_nil(arg)
-    raise 'Argument passed must be an integer' unless arg.class == Fixnum || arg.nil?
-  end
-
-  def raise_error_unless_valid_month(arg)
-    raise 'Argument passed is must be a valid month' unless arg.class == String && month_names.include?(arg.downcase.capitalize)
-  end
-
-  def raise_error_unless_valid_month_name_or_number(arg)
-    raise_error_unless_valid_month
-    raise_error_unless_in_num_range(1, 12, arg)
-  end
-
 end
+
+require_relative "date_plus/version"
+require_relative "date_plus/exceptions.rb"
