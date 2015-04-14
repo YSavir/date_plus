@@ -21,7 +21,7 @@ class DateP
   private
 
   def raise_error_unless_valid_weekday(arg)
-    raise InvalidWeekdayError unless arg.class == String || !arg_names.include?(arg.downcase.capitalize)
+    raise InvalidWeekdayError unless arg.class == String && !WEEKDAY_NAMES.include?(arg.downcase.capitalize)
   end
 
   def raise_error_unless_fixnum(arg)
@@ -33,7 +33,7 @@ class DateP
   end
 
   def raise_error_unless_valid_month(arg)
-    raise InvalidMonthError unless arg.class == String && month_names.include?(arg.downcase.capitalize)
+    raise InvalidMonthError unless arg.class == String && MONTH_NAMES.include?(arg.downcase.capitalize)
   end
 
   def raise_error_unless_valid_month_name_or_number(arg)

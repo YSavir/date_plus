@@ -1,8 +1,14 @@
 require 'date'
 require_relative "date_plus/converters"
+require_relative "date_plus/version"
+require_relative "date_plus/exceptions"
 
 class DateP < Date
   include Converters
+
+  WEEKDAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+  MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
 
   # Check if first argument is a date.
   # If it is, instantiate a new DateP with that date's date
@@ -10,7 +16,7 @@ class DateP < Date
   def self.new(year=-4712, month=1, day=1, start=Date::ITALY)
     if year.class == Date
       date = year
-      return DateP.new(date.year, date.month, date.day, date.start)
+      return self.new(date.year, date.month, date.day, date.start)
     else
       super
     end
@@ -43,56 +49,63 @@ class DateP < Date
   def future_instance_of_weekday(weekday, instances_away=1)
     raise_error_unless_valid_weekday
     raise_error_unless_fixnum_or_nil(instances_away)
-    self.step(self + (7 * instances_away), 1).reverse_each do |current_day|
-      return current_day if current_day.weekday_name == weekday.downcase.capitalize
+
+    potential_weekdays = potential_days(instances_away).map do |potential_day|
+      potential_day.weekday_name
+    end
+
+    potential_weekdays.find do |potential_day|
+      potential_day.weekday_name == weekday_name.downcase.capitalize
     end
   end
 
   def future_instance_of_day(day, instances_away=1)
-    raise_error_unless_in_num_range(1, month.end_of_month.day, day)
-    raise_error_unless_fixnum_or_nil(instances_away)
+    # raise_error_unless_in_num_range(1, end_of_month.day, day)
+    # raise_error_unless_fixnum_or_nil(instances_away)
 
-    self.step(self + (31 * instances_away), 1).reverse_each do |current_day|
-      return current_day if current_day.day === day
+    potential_days(instances_away).find do |possible_day|
+      possible_day.day === day
     end
   end
 
   def future_instance_of_month(month_name, instances_away=1)
     raise_error_unless_valid_month(month_name)
     raise_error_unless_fixnum_or_nil(instances_away)
-    months = []
-    first_of_month = Date.today.start_of_month
-    (instances_away * 12).times do
-      months.push(first_of_month)
-      first_of_month = first_of_month.next_month
+
+    potential_months = [next_month.start_of_month]
+    (instances_away * 12 - 1).times do
+      potential_months.push(potential_months.last.next_month)
     end
-    months.reverse.each {|first_of_month| return first_of_month if first_of_month.month == Date.parse(month_name).month }
+    potential_months.reverse.find do |potential_month|
+      potential_month.month == month_name_to_number(month_name)
+    end
   end
 
   def future_year(instances_away)
     raise_error_unless_fixnum(instances_away)
-    year = Date.today.start_of_year
-    years = []
-    (instances_away + 1).times {years.push(year); year = year.next_year}
-    return years.last
+    year = start_of_year
+    (instances_away + 1).times { year = year.next_year }
+    return year
+  end
+
+  protected
+
+  def valid_condition(field, condition)
+    self.send(field) == condition
   end
 
   private
 
-  def weekday_names
-    ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+  def potential_days(instances_away)
+    step(self + (31 * instances_away), 1).to_a.reverse
   end
 
-  def month_names
-    ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  def month_name_to_number(month_name)
+    MONTH_NAMES.index(month_name) + 1
   end
 
   def matches_value(field, value)
     self.send(field) == value
-  end
-
-  def valid_condition(field, condition)
-    self.send(field) == condition
   end
 
   def check_dates_by_year(start_date, end_date, options)
@@ -105,5 +118,3 @@ class DateP < Date
 
 end
 
-require_relative "date_plus/version"
-require_relative "date_plus/exceptions"

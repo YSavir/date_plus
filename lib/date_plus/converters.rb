@@ -37,5 +37,6 @@ class DateP < Date
     def end_of_year
       self.class.new(year, -1, -1)
     end
+    
   end
 end
