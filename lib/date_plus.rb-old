@@ -6,31 +6,15 @@ require_relative "date_plus/exceptions"
 class DateP < Date
   include Converters
 
-  WEEKDAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
   MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 
-  # Check if first argument is a date.
-  # If it is, instantiate a new DateP with that date's date
-  # else run new as usual
-  def self.new(year=-4712, month=1, day=1, start=Date::ITALY)
-    if year.class == Date
-      date = year
-      return self.new(date.year, date.month, date.day, date.start)
-    else
-      super
-    end
-  end
-
+  
   # options can accept any method that responds to date
   # so long as the criteria matches the output of that method
   def next_instance_of(options)
     options.each { |k, v| options[k] = v.downcase.capitalize if v.class == String }
     return check_dates_by_year(self, end_of_year, options)
-  end
-
-  def find_next_weekday(weekday)
-    self.step(next_week).reverse_each {|date| return date if date.weekday_name == weekday}
   end
 
   def find_next_day(day)
@@ -47,7 +31,7 @@ class DateP < Date
   end
 
   def future_instance_of_weekday(weekday, instances_away=1)
-    raise_error_unless_valid_weekday
+    raise_error_unless_valid_weekday"
     raise_error_unless_fixnum_or_nil(instances_away)
 
     potential_weekdays = potential_days(instances_away).map do |potential_day|

@@ -1,17 +1,5 @@
 require 'pry'
-require_relative 'spec_helper'
-
-class DateP < Date
-
-  def self.new(year=-4712, month=1, day=1, start=Date::ITALY)
-    if year.class == Date
-      date = year
-      return self.new date.year, date.month, date.day, date.start
-    else
-      super
-    end
-  end
-end
+require_relative '../spec_helper'
 
 describe DateP do
   it 'should inherit from Date' do
