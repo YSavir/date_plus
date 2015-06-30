@@ -40,7 +40,12 @@ class DateP < Date
 
     def previous_year
       last_year = year - 1
-      DateP.new(last_year, month, day)
+      self.class.new(last_year, month, day)
+    end
+ 
+    def next_year
+      next_year = year + 1
+      self.class.new(next_year, month, day)
     end
     
   end
