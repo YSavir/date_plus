@@ -2,6 +2,8 @@ require 'bundler/setup'
 Bundler.require :default, :test
 # require_relative '../lib/date_plus.rb'
 
+require 'pry'
+
 Dir["spec/support/**/*.rb"].each { |f| require File.expand_path f }
 
 RSpec.configure do |c|
