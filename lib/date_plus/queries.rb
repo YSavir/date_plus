@@ -76,13 +76,5 @@ class DateP
         return date if date.weekday_name.downcase == weekday.downcase
       end
     end
-
-    # Find the same date of the previous year
-    #
-    # @return [DateP] DateP object of the same date of the previous year
-
-    def previous_year
-      self.class.new(year - 1, month, day, start)
-    end
   end
 end

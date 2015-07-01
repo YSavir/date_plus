@@ -109,15 +109,4 @@ RSpec.describe DateP do
       expect(@new_years_2015.end_of_year).to eql DateP.new 2015, 12, 31
     end
   end
-
-  describe '#previous_year' do
-    it 'should return the same date of the previous year' do
-      date_for_2014 = DateP.new 2014, 1, 10
-      previous_year = date_for_2014.previous_year
-      
-      expect(previous_year).to eql DateP.new 2013, 1, 10
-      expect(previous_year.previous_year).to eql DateP.new 2012, 1, 10
-    end
-  end
-
 end
