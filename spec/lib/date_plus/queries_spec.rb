@@ -13,6 +13,16 @@ RSpec.describe DateP do
     end
   end
 
+  describe '#prev_week' do
+    it 'should return the same week day of the previous week' do
+      date = DateP.new 2015, 1, 15
+      prev_week = date.prev_week
+
+      expect(prev_week).to eql DateP.new 2015, 1, 8
+      expect(prev_week.prev_week).to eql @new_years_2015
+    end
+  end
+
   describe '#find_next_weekday' do
     
     describe 'When given a valid weekday' do

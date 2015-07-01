@@ -12,6 +12,14 @@ class DateP
       self + 7
     end
 
+    # Get same weekday of the previous week
+    #
+    # @return [DateP] Same weekday of the previous week
+
+    def prev_week
+      self - 7
+    end
+
     # Get the first day of the date's week. Defaults to Sunday.
     #
     # @option opts [Boolean] :monday (false) Whether or not to use Monday as start of the week.
