@@ -14,6 +14,7 @@ RSpec.describe DateP do
   end
 
   describe '#find_next_weekday' do
+    
     describe 'When given a valid weekday' do
       it 'should return the next day of that name' do
         date = DateP.new 2014, 12, 28

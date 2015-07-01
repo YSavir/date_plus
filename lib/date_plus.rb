@@ -1,10 +1,18 @@
+# Core Class
+#
 class DateP < Date
 
-  WEEKDAY_NAMES = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
   # Check if first argument is a date.
-  # If it is, instantiate a new DateP with that date's date
-  # else run new as usual
+  # If it is, instantiate a new DateP with that date's date. Otherwise  will
+  # run new as usual
+  #
+  # @param [Fixnum] year    Year
+  # @param [Fixnum] month   Month
+  # @param [Fixnum] day     Day
+  # @param [Fixnum] start   Start
+  # @return [DateP] DateP object
+
   def self.new(year=-4712, month=1, day=1, start=Date::ITALY)
     if year.class == Date
       date = year
@@ -13,6 +21,14 @@ class DateP < Date
       super
     end
   end
+
+  private
+
+  # List of all weekday names.
+  # @todo allow both strings and symbols
+  
+  WEEKDAY_NAMES = %w{monday tuesday wednesday thursday friday saturday sunday}
+
 end
 
 require 'date_plus/queries'
