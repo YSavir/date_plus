@@ -8,26 +8,19 @@ RSpec.describe DateP do
       date = DateP.new 2014, 12, 18
       next_week = date.next_week
       
-      expect(next_week).to have_day 25
-      expect(next_week).to have_month 12
-      expect(next_week).to have_year 2014
-
+      expect(next_week).to have_date 2014, 12, 25
       expect(next_week.next_week).to eql @new_years_2015
     end
   end
 
   describe '#find_next_weekday' do
-    
     describe 'When given a valid weekday' do
       it 'should return the next day of that name' do
         date = DateP.new 2014, 12, 28
         next_monday = date.find_next_weekday 'monday'
         next_thursday = date.find_next_weekday 'Thursday'
 
-        expect(next_monday).to have_day 29
-        expect(next_monday).to have_month 12
-        expect(next_monday).to have_year 2014
-
+        expect(next_monday).to have_date 2014, 12, 29
         expect(next_thursday).to eql @new_years_2015
       end
     end

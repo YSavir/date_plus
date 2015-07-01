@@ -1,30 +1,10 @@
-RSpec::Matchers.define :have_month do |expected|
+RSpec::Matchers.define :have_date do |year, month, day|
   match do |actual|
-    actual.month == expected
+    actual.year == year && actual.month == month && actual.day == day
   end
 
   failure_message do |actual|
-    "Expected month to be #{expected} but got #{actual.month} instead"
-  end
-end
-
-RSpec::Matchers.define :have_day do |expected|
-  match do |actual|
-    actual.day == expected
-  end
-
-  failure_message do |actual|
-    "Expected day to be #{expected} but got #{actual.day} instead"
-  end
-end
-
-RSpec::Matchers.define :have_year do |expected|
-  match do |actual|
-    actual.year == expected
-  end
-
-  failure_message do |actual|
-    "Expected year to be #{expected} but got #{actual.year} instead"
+    "Expected a date of #{month}/#{day}/#{year} but got #{actual.strftime("%m/%d/%y")} instead."
   end
 end
 

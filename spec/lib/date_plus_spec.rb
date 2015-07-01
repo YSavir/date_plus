@@ -17,9 +17,7 @@ describe DateP do
       subject { date }
 
       it { is_expected.to be_instance_of DateP }
-      it { is_expected.to have_day 7 }
-      it { is_expected.to have_month 3 }
-      it { is_expected.to have_year 2015 }
+      it { is_expected.to have_date 2015, 3, 7 }
     end
 
     describe 'When receiving a Date object' do
@@ -27,9 +25,7 @@ describe DateP do
       subject { date }
 
       it { is_expected.to be_instance_of DateP }
-      it { is_expected.to have_day 7 }
-      it { is_expected.to have_month 3 }
-      it { is_expected.to have_year 2015 }
+      it { is_expected.to have_date 2015, 3, 7 }
     end
   end
 end
