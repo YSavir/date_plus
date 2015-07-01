@@ -33,9 +33,11 @@ end
 
 require 'date_plus/queries'
 require 'date_plus/getters'
+require 'date_plus/predicates'
 require 'date_plus/exceptions'
 
 class DateP
   include Getters
   include Queries
+  include Predicates
 end
