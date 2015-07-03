@@ -22,29 +22,29 @@ RSpec.describe DateP do
       expect(prev_week.prev_week).to eql @new_years_2015
     end
   end
-
-  describe '#find_next_weekday' do
-    
-    describe 'When given a valid weekday' do
-      it 'should return the next day of that name' do
-        date = DateP.new 2014, 12, 28
-        next_monday = date.find_next_weekday 'monday'
-        next_thursday = date.find_next_weekday 'Thursday'
-
-        expect(next_monday).to have_date 2014, 12, 29
-        expect(next_thursday).to eql @new_years_2015
-      end
-    end
-
-    describe 'When given an invalid weekday' do
-      it 'should raise an error' do
-        date = DateP.new 2014, 12, 28
-
-        expect { date.find_next_weekday 'Foo' }.to raise_error DateP::InvalidWeekdayError
-      end
-    end
-  end
-
+#
+#  describe '#find_next_weekday' do
+#    
+#    describe 'When given a valid weekday' do
+#      it 'should return the next day of that name' do
+#        date = DateP.new 2014, 12, 28
+#        next_monday = date.find_next_weekday 'monday'
+#        next_thursday = date.find_next_weekday 'Thursday'
+#
+#        expect(next_monday).to have_date 2014, 12, 29
+#        expect(next_thursday).to eql @new_years_2015
+#      end
+#    end
+#
+#    describe 'When given an invalid weekday' do
+#      it 'should raise an error' do
+#        date = DateP.new 2014, 12, 28
+#
+#        expect { date.find_next_weekday 'Foo' }.to raise_error DateP::InvalidWeekdayError
+#      end
+#    end
+#  end
+#
 
   describe '#start_of_week' do
     it 'should return the previous Sunday' do
@@ -117,6 +117,72 @@ RSpec.describe DateP do
 
       expect(date_for_2014.end_of_year).to eql DateP.new 2014, 12, 31
       expect(@new_years_2015.end_of_year).to eql DateP.new 2015, 12, 31
+    end
+  end
+
+  describe '#next_cwday' do
+    describe 'When given a weekday name' do
+      describe 'as a symbol' do
+        it 'should return the next instance of the given weekday' do
+          date = DateP.new 2015, 1, 1
+          next_monday = date.next_cwday(:monday)
+          next_next_monday = next_monday.next_cwday(:monday)
+
+          expect(next_monday).to eq DateP.new 2015, 1, 5
+          expect(next_next_monday).to eq DateP.new 2015, 1, 12
+        end
+      end
+      
+      describe 'as a string' do
+        it 'should return the next instance of the given weekday' do
+          date = DateP.new 2015, 1, 1
+          next_monday = date.next_cwday('monday')
+          next_next_monday = next_monday.next_cwday('monday')
+
+          expect(next_monday).to eq DateP.new 2015, 1, 5
+          expect(next_next_monday).to eq DateP.new 2015, 1, 12
+        end
+      end
+
+      describe 'that is not a valid weekday' do
+        it 'should raise an error' do
+          date = DateP.new 2015, 1, 1
+          invalid_block = -> { date.next_cwday :wodynsday }
+          
+          expect(invalid_block).to raise_error DateP::InvalidWeekdayError
+        end
+      end
+    end
+
+    describe 'When given a weekday number' do
+      it 'should return the next instance of the given weekday' do
+        date = DateP.new 2015, 1, 1
+        next_monday = date.next_cwday(1)
+        next_next_monday = next_monday.next_cwday(1)
+
+        expect(next_monday).to eq DateP.new 2015, 1, 5
+        expect(next_next_monday).to eq DateP.new 2015, 1, 12
+      end
+
+      describe 'that is not a valid weekday number' do
+        it 'should raise an error' do
+          date = DateP.new 2015, 1, 1
+          invalid_block = -> { date.next_cwday(12) }
+
+          expect(invalid_block).to raise_error DateP::InvalidWeekdayError
+        end
+      end
+    end
+
+    describe 'When told how many instances in the future' do
+      it 'should reutrn the appropriate instance of the given weekday' do
+        date = DateP.new 2015, 1, 1
+        second_monday = date.next_cwday(:monday, 2)
+        third_monday = date.next_cwday(:monday, 3)
+
+        expect(second_monday).to eql DateP.new 2015, 1, 12
+        expect(third_monday).to eql DateP.new 2015, 1, 19
+      end
     end
   end
 end

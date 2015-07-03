@@ -72,17 +72,28 @@ class DateP
 
     # Find next instance of a given weekday relative to the date
     #
-    # @param weekday [String] The day of the week to search for. Must be a weekday _name_, not a number.
+    # @param weekday [String, Symbol, Fixnum] The day of the week to search for.  Can use the full day name as a string or symbol, or the corresponding weekday number (1-7)
     # @return [DateP] DateP object of the found date
     # @raise [InvalidWeekdayError] if passed an invalid weekday argument
-    
-    def find_next_weekday(weekday)
-      unless WEEKDAY_NAMES.include? weekday.downcase
-        raise InvalidWeekdayError, "\"#{weekday}\" is not a valid weekday"
-      end
-      self.step(next_week).reverse_each do |date|
+
+    def next_cwday(weekday, instances_away=1)
+      weekday = weekday.is_a?(Fixnum) ? weekday_from_num(weekday) : weekday.to_s
+      raise InvalidWeekdayError unless weekday_names.include? weekday
+      farthest_date = self + (7 * instances_away)
+      self.step(farthest_date).reverse_each do |date|
         return date if date.weekday_name.downcase == weekday.downcase
       end
+      nil
+    end
+
+    private
+
+    def weekday_from_num(weekday)
+      weekday_names[ weekday - 1 ]
+    end
+
+    def weekday_names
+      self.class::WEEKDAY_NAMES
     end
   end
 end
